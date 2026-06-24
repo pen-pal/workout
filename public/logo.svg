@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Opaque dark background: iOS renders transparent apple-touch / maskable icons
+       on a black/odd background, so fill the whole canvas. -->
+  <rect width="512" height="512" fill="#0f172a"/>
+  <g fill="#22c55e">
+    <!-- handle -->
+    <rect x="156" y="240" width="200" height="32" rx="10"/>
+    <!-- left plates -->
+    <rect x="122" y="196" width="34" height="120" rx="12"/>
+    <rect x="88"  y="172" width="34" height="168" rx="14"/>
+    <!-- right plates -->
+    <rect x="356" y="196" width="34" height="120" rx="12"/>
+    <rect x="390" y="172" width="34" height="168" rx="14"/>
+  </g>
+</svg>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <!-- iOS standalone hints (vite-plugin-pwa does NOT emit these) -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Workout" />
+
+    <!-- Do NOT add theme-color, apple-touch-icon, favicon, or manifest links here.
+         vite-plugin-pwa injects all of them at build time (injectThemeColor + the
+         '2023' html preset). Duplicating them produces two tags in the built HTML. -->
+
+    <title>4-Week Workout Plan</title>
+
+    <style>
+      :root {
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-right: env(safe-area-inset-right, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-left: env(safe-area-inset-left, 0px);
+      }
+      * { -webkit-tap-highlight-color: transparent; }
+      html, body { margin: 0; background: #0f172a; }
+      body {
+        min-height: 100dvh;
+        background: #0f172a;
+        -webkit-text-size-adjust: 100%;
+        overscroll-behavior-y: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+      }
+      #root { min-height: 100dvh; }
+      /* hide horizontal scrollbars on the selector rows / tables */
+      .no-scrollbar { scrollbar-width: none; }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      /* allow copying weights / notes out of the tables */
+      table, td, th { -webkit-user-select: text; user-select: text; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

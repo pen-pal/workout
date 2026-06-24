@@ -1,0 +1,22 @@
+{
+  "name": "workout-plan",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run generate-pwa-assets && vite build",
+    "preview": "vite preview --host",
+    "generate-pwa-assets": "pwa-assets-generator"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vite-pwa/assets-generator": "^0.2.6",
+    "vite": "^6.0.7",
+    "vite-plugin-pwa": "^0.21.1"
+  }
+}
