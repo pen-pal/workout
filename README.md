@@ -23,8 +23,8 @@ same codebase.
 ## Tech stack
 
 React 18 · Vite 6 · [`vite-plugin-pwa`](https://vite-pwa-org.netlify.app/) (Workbox
-service worker) · [`@vercel/analytics`](https://vercel.com/docs/analytics). Fully
-static — no backend.
+service worker) · [`@vercel/analytics`](https://vercel.com/docs/analytics) +
+[`@vercel/speed-insights`](https://vercel.com/docs/speed-insights). Fully static — no backend.
 
 ## Quick start
 
@@ -116,12 +116,14 @@ Airplane Mode and relaunch — it boots fully offline.
 - **Change the icon:** replace `public/logo.svg` (keep it square and opaque, with ~10%
   padding so the rounded/maskable version isn't clipped), then rebuild.
 
-## Analytics
+## Analytics & Speed Insights
 
-`<Analytics />` (from `@vercel/analytics/react`) is mounted in `src/main.jsx`. It's
-**active on Vercel and custom domains**, and **skipped on GitHub Pages** (`github.io`),
-where the `/_vercel/insights` beacon isn't served and would just 404. Data appears in the
-Vercel **Analytics** tab after the first visits (disable content blockers when testing).
+`<Analytics />` and `<SpeedInsights />` (from `@vercel/analytics/react` and
+`@vercel/speed-insights/react`) are mounted in `src/main.jsx`. They're **active on Vercel
+and custom domains**, and **skipped on GitHub Pages** (`github.io`), where the `/_vercel`
+beacons aren't served and would just 404. Enable **Web Analytics** and **Speed Insights**
+in the Vercel project's respective tabs; data appears after the first visits (disable
+content blockers when testing).
 
 ## iOS notes
 
