@@ -2,12 +2,14 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
-// `base`: '/' is correct for a root deploy (https://example.com/).
-// If you ever host under a subpath (e.g. https://user.github.io/workout/),
-// set base to '/workout/' AND mirror it in manifest scope/start_url below,
-// or the service-worker scope and install will break on iOS.
+// Base path is host-dependent and chosen at build time so ONE config serves both targets:
+//   - Vercel / custom domain  -> served at root        -> base "/"
+//   - GitHub Pages project site -> https://<user>.github.io/workout/ -> base "/workout/"
+// The GitHub Actions workflow sets GITHUB_PAGES=true; Vercel leaves it unset.
+const base = process.env.GITHUB_PAGES === "true" ? "/workout/" : "/";
+
 export default defineConfig({
-  base: "/",
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -35,11 +37,13 @@ export default defineConfig({
         background_color: "#0f172a",
         display: "standalone",
         orientation: "portrait",
-        scope: "/",
-        start_url: "/",
-        id: "/",
+        // scope / start_url / id track the base so install + SW scope are correct on both hosts.
+        scope: base,
+        start_url: base,
+        id: base,
         // icons[] intentionally omitted: pwaAssets.overrideManifestIcons fills
-        // them from the generated pwa-192x192 / pwa-512x512 / maskable assets.
+        // them with RELATIVE srcs (pwa-192x192.png …) that resolve against the
+        // manifest URL, so they work at both "/" and "/workout/".
       },
 
       workbox: {
@@ -48,8 +52,8 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
-        // Cold offline launch / deep links boot the cached shell.
-        navigateFallback: "/index.html",
+        // Cold offline launch / deep links boot the cached shell (base-aware).
+        navigateFallback: `${base}index.html`,
       },
 
       // SW only runs in the production build; test via `npm run build && npm run preview`.

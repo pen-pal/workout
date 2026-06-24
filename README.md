@@ -38,28 +38,40 @@ Two ways:
 
 ### Option A — Deploy to a free static host (recommended: permanent, no Mac needed)
 
-This gives you a permanent HTTPS URL. Install once, works offline forever.
+Gives you a permanent HTTPS URL — install once, works offline forever. The app
+deploys to **either GitHub Pages or Vercel**; the Vite `base` is chosen at build
+time, so the same code works on both:
 
-**Vercel:**
+- **Vercel / Netlify / custom domain** → served at root → `base: "/"` (default)
+- **GitHub Pages project site** → `https://<user>.github.io/workout/` → `base: "/workout/"`
+  (the deploy workflow sets `GITHUB_PAGES=true`)
+
+**GitHub Pages — automatic on every push to `main`:**
+1. **One-time:** in the repo, open **Settings → Pages → Build and deployment** and
+   set **Source = GitHub Actions**. This *must* be done in the UI — a workflow
+   cannot enable it, and the first deploy fails without it.
+2. Push to `main`. `.github/workflows/deploy.yml` builds with `GITHUB_PAGES=true`
+   and publishes.
+3. Live at `https://<your-user>.github.io/workout/`.
+
+**Vercel — connect the GitHub repo:**
+- Import the repo at vercel.com → it auto-detects Vite (build `npm run build`,
+  output `dist`) and deploys at the root domain on every push. No settings needed
+  (`GITHUB_PAGES` is unset, so `base` stays `/`).
+
+**CLI alternative (builds locally, then uploads):**
 ```bash
-npm i -g vercel       # once
+npm i -g vercel          # or: npm i -g netlify-cli
 npm run build
-vercel deploy --prod  # follow prompts; serve the `dist` directory
+vercel deploy --prod     # or: netlify deploy --prod --dir=dist
 ```
 
-**Netlify:**
-```bash
-npm i -g netlify-cli  # once
-npm run build
-netlify deploy --prod --dir=dist
-```
+All free tiers serve HTTPS (required for the offline service worker). The URL is
+obscure but technically public — fine for a personal plan. To avoid public
+hosting entirely, use Option B.
 
-Both have a free tier. The URL is obscure but technically public — fine for a
-personal workout plan. (If you'd rather not host it publicly at all, use Option B.)
-
-> GitHub Pages note: it serves under `/<repo>/`, so you'd need to set
-> `base: '/<repo>/'` in `vite.config.js` (and it's mirrored into the SW scope).
-> Vercel/Netlify serve at the root, which matches the current `base: '/'`.
+> Preview the **Pages** build locally with the subpath:
+> `GITHUB_PAGES=true npm run build && npm run preview` → http://localhost:4173/workout/
 
 ### Option B — Serve from your Mac over a temporary HTTPS tunnel (most private)
 
