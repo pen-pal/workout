@@ -1,12 +1,8 @@
 import { google } from 'googleapis';
 
-export const config = {
-  runtime: 'nodejs18.x',
-};
-
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 
-async function getAuth() {
+function getAuth() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -21,7 +17,7 @@ export default async function handler(req, res) {
   const { method } = req;
   
   try {
-    const auth = await getAuth();
+    const auth = getAuth();
     const sheets = google.sheets({ version: 'v4', auth });
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
@@ -29,7 +25,7 @@ export default async function handler(req, res) {
       // Read all data
       const response = await sheets.spreadsheets.values.get({
         spreadsheetId,
-        range: 'Sheet1!A2:J', // Adjust if your sheet name is different
+        range: 'Sheet1!A2:J',
       });
 
       const rows = response.data.values || [];
