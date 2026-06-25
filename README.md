@@ -137,3 +137,13 @@ content blockers when testing).
   reopen it.
 - **HTTPS is mandatory** for offline. Plain `http://<LAN-IP>` will install but won't cache.
 ```
+
+## Features
+- ✅ Username-based user management
+- ✅ Editable Sets, Reps, and Rest values
+- ✅ Local storage with Excel export/import
+- ✅ Multi-user support (data separated by username)
+- ✅ Rest timer with notifications
+- ✅ Exercise completion tracking
+- ✅ Progressive overload plan (4-week PPL split)
+- ✅ Works 100% offline after first load

@@ -6,7 +6,8 @@ const card = "#1e293b";
 const muted = "#94a3b8";
 const light = "#f1f5f9";
 
-const weeks = [
+// Initial workout structure - THIS IS YOUR BASE DATA
+const initialWeeks = [
   {
     week: 1,
     label: "Week 1 — Foundation",
@@ -30,53 +31,51 @@ const weeks = [
       {
         day: "Day 2 — Pull (Back / Biceps)",
         exercises: [
-          { name: "Barbell Deadlift", sets: 4, reps: "5", rest: "3 min", note: "King of all pulls" },
-          { name: "Barbell Bent-Over Row", sets: 4, reps: "6–8", rest: "2 min", note: "" },
-          { name: "Lat Pulldown (Wide Grip)", sets: 3, reps: "8–10", rest: "90s", note: "" },
+          { name: "Deadlift", sets: 3, reps: "5", rest: "3–5 min", note: "Heavy, focus on form" },
+          { name: "Pull-Ups", sets: 3, reps: "8–10", rest: "90s", note: "Add weight if needed" },
+          { name: "Barbell Row", sets: 3, reps: "8–10", rest: "90s", note: "" },
+          { name: "Face Pulls", sets: 3, reps: "15–20", rest: "60s", note: "" },
+          { name: "Barbell Curl", sets: 3, reps: "10–12", rest: "60s", note: "" },
+          { name: "Hammer Curl", sets: 2, reps: "12", rest: "60s", note: "" },
+        ],
+      },
+      {
+        day: "Day 3 — Legs (Quads / Hamstrings / Calves)",
+        exercises: [
+          { name: "Back Squat", sets: 4, reps: "6–8", rest: "3 min", note: "Establish working weight" },
+          { name: "Romanian Deadlift", sets: 3, reps: "8–10", rest: "90s", note: "" },
+          { name: "Leg Press", sets: 3, reps: "10–12", rest: "90s", note: "" },
+          { name: "Leg Curl", sets: 3, reps: "12–15", rest: "60s", note: "" },
+          { name: "Calf Raise", sets: 4, reps: "15–20", rest: "60s", note: "" },
+        ],
+      },
+      {
+        day: "Day 4 — Push (Chest / Shoulders / Triceps)",
+        exercises: [
+          { name: "Incline Barbell Press", sets: 4, reps: "8–10", rest: "2 min", note: "" },
+          { name: "Flat DB Press", sets: 3, reps: "10–12", rest: "90s", note: "" },
+          { name: "Lateral Raise", sets: 4, reps: "12–15", rest: "60s", note: "" },
+          { name: "Triceps Pushdown", sets: 3, reps: "12–15", rest: "60s", note: "" },
+          { name: "Skullcrushers", sets: 2, reps: "10–12", rest: "60s", note: "" },
+        ],
+      },
+      {
+        day: "Day 5 — Pull (Back / Biceps)",
+        exercises: [
+          { name: "Lat Pulldown", sets: 4, reps: "8–10", rest: "90s", note: "" },
           { name: "Seated Cable Row", sets: 3, reps: "10–12", rest: "90s", note: "" },
-          { name: "Dumbbell Curl", sets: 3, reps: "10–12", rest: "60s", note: "" },
-          { name: "Face Pulls", sets: 3, reps: "15", rest: "60s", note: "Great for shoulder health" },
+          { name: "Single-Arm DB Row", sets: 3, reps: "10–12", rest: "60s", note: "" },
+          { name: "Reverse Fly", sets: 3, reps: "15–20", rest: "60s", note: "" },
+          { name: "Preacher Curl", sets: 3, reps: "10–12", rest: "60s", note: "" },
         ],
       },
       {
-        day: "Day 3 — Legs (Quad Focus)",
+        day: "Day 6 — Legs (Quads / Hamstrings / Calves)",
         exercises: [
-          { name: "Barbell Back Squat", sets: 4, reps: "6–8", rest: "3 min", note: "Depth to parallel or below" },
-          { name: "Leg Press", sets: 3, reps: "10–12", rest: "2 min", note: "" },
-          { name: "Dumbbell Lunges", sets: 3, reps: "10/leg", rest: "90s", note: "" },
+          { name: "Front Squat", sets: 3, reps: "8–10", rest: "2–3 min", note: "" },
           { name: "Leg Extension", sets: 3, reps: "12–15", rest: "60s", note: "" },
-          { name: "Standing Calf Raise", sets: 4, reps: "15–20", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 4 — Push (Shoulders Focus)",
-        exercises: [
-          { name: "Seated DB Overhead Press", sets: 4, reps: "8–10", rest: "2 min", note: "" },
-          { name: "Incline Barbell Press", sets: 3, reps: "8–10", rest: "90s", note: "" },
-          { name: "Cable Lateral Raise", sets: 4, reps: "15", rest: "60s", note: "" },
-          { name: "Cable Front Raise", sets: 3, reps: "12", rest: "60s", note: "" },
-          { name: "Dips (Triceps)", sets: 3, reps: "8–10", rest: "90s", note: "Add weight if bodyweight is easy" },
-          { name: "Triceps Overhead Cable Ext.", sets: 3, reps: "12", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 5 — Pull (Back Thickness / Biceps)",
-        exercises: [
-          { name: "Pull-Ups / Weighted Pull-Ups", sets: 4, reps: "5–8", rest: "2 min", note: "Add weight if 8 is easy" },
-          { name: "T-Bar Row", sets: 4, reps: "8–10", rest: "2 min", note: "" },
-          { name: "Single Arm DB Row", sets: 3, reps: "10/side", rest: "90s", note: "" },
-          { name: "Cable Curl (EZ bar)", sets: 3, reps: "10–12", rest: "60s", note: "" },
-          { name: "Hammer Curl", sets: 3, reps: "12", rest: "60s", note: "" },
-          { name: "Rear Delt Cable Fly", sets: 3, reps: "15", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 6 — Legs (Hamstring / Glute Focus)",
-        exercises: [
-          { name: "Romanian Deadlift", sets: 4, reps: "8–10", rest: "2 min", note: "Feel the stretch at the bottom" },
-          { name: "Leg Curl (Lying)", sets: 4, reps: "10–12", rest: "90s", note: "" },
-          { name: "Bulgarian Split Squat", sets: 3, reps: "8/leg", rest: "90s", note: "" },
-          { name: "Hip Thrust (Barbell)", sets: 4, reps: "10–12", rest: "90s", note: "" },
+          { name: "Lying Leg Curl", sets: 3, reps: "12–15", rest: "60s", note: "" },
+          { name: "Bulgarian Split Squat", sets: 3, reps: "10–12", rest: "60s", note: "" },
           { name: "Seated Calf Raise", sets: 4, reps: "15–20", rest: "60s", note: "" },
         ],
       },
@@ -84,220 +83,74 @@ const weeks = [
   },
   {
     week: 2,
-    label: "Week 2 — Load Up",
+    label: "Week 2 — Build",
     rpe: "RPE 8",
-    rpeNote: "Leaves ~2 reps in the tank. Start feeling the burn.",
+    rpeNote: "Leaves ~2 reps in the tank. Add weight/reps.",
     intensity: "100%",
     tag: "BUILD",
     tagColor: "#f59e0b",
     days: [
       {
-        day: "Day 1 — Push",
+        day: "Day 1 — Push (Chest / Shoulders / Triceps)",
         exercises: [
-          { name: "Barbell Bench Press", sets: 4, reps: "6–8", rest: "2–3 min", note: "Add 2.5–5kg vs Week 1" },
-          { name: "Incline Dumbbell Press", sets: 3, reps: "8–10", rest: "90s", note: "Add 2kg each side if 10 reps were clean" },
-          { name: "Cable Lateral Raise", sets: 3, reps: "12–15", rest: "60s", note: "Add 1 set if energy allows" },
-          { name: "Overhead Press (DB)", sets: 4, reps: "8–10", rest: "90s", note: "+1 set vs Week 1" },
-          { name: "Triceps Rope Pushdown", sets: 3, reps: "12–15", rest: "60s", note: "Add weight" },
-          { name: "Overhead Triceps Extension", sets: 3, reps: "12", rest: "60s", note: "+1 set vs Week 1" },
+          { name: "Barbell Bench Press", sets: 4, reps: "6–8", rest: "2–3 min", note: "Add 2.5–5 kg" },
+          { name: "Incline Dumbbell Press", sets: 4, reps: "8–10", rest: "90s", note: "+1 set" },
+          { name: "Cable Lateral Raise", sets: 3, reps: "12–15", rest: "60s", note: "" },
+          { name: "Overhead Press (DB)", sets: 3, reps: "8–10", rest: "90s", note: "" },
+          { name: "Triceps Rope Pushdown", sets: 3, reps: "12–15", rest: "60s", note: "" },
+          { name: "Overhead Triceps Extension", sets: 2, reps: "12", rest: "60s", note: "" },
         ],
       },
-      {
-        day: "Day 2 — Pull",
-        exercises: [
-          { name: "Barbell Deadlift", sets: 4, reps: "5", rest: "3 min", note: "Add 5kg vs Week 1" },
-          { name: "Barbell Bent-Over Row", sets: 4, reps: "6–8", rest: "2 min", note: "Add 2.5kg" },
-          { name: "Lat Pulldown (Wide Grip)", sets: 4, reps: "8–10", rest: "90s", note: "+1 set" },
-          { name: "Seated Cable Row", sets: 3, reps: "10–12", rest: "90s", note: "Add weight" },
-          { name: "Dumbbell Curl", sets: 3, reps: "10–12", rest: "60s", note: "Add 1–2kg per hand" },
-          { name: "Face Pulls", sets: 3, reps: "15", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 3 — Legs (Quad Focus)",
-        exercises: [
-          { name: "Barbell Back Squat", sets: 4, reps: "6–8", rest: "3 min", note: "Add 5kg vs Week 1" },
-          { name: "Leg Press", sets: 4, reps: "10–12", rest: "2 min", note: "+1 set, add weight" },
-          { name: "Dumbbell Lunges", sets: 3, reps: "10/leg", rest: "90s", note: "Heavier DBs" },
-          { name: "Leg Extension", sets: 3, reps: "12–15", rest: "60s", note: "Add weight" },
-          { name: "Standing Calf Raise", sets: 4, reps: "15–20", rest: "60s", note: "Add weight" },
-        ],
-      },
-      {
-        day: "Day 4 — Push (Shoulders Focus)",
-        exercises: [
-          { name: "Seated DB Overhead Press", sets: 4, reps: "8–10", rest: "2 min", note: "Add 2kg per hand" },
-          { name: "Incline Barbell Press", sets: 4, reps: "8–10", rest: "90s", note: "+1 set" },
-          { name: "Cable Lateral Raise", sets: 4, reps: "15", rest: "60s", note: "" },
-          { name: "Cable Front Raise", sets: 3, reps: "12", rest: "60s", note: "" },
-          { name: "Dips (Triceps)", sets: 4, reps: "8–10", rest: "90s", note: "+1 set, add weight if easy" },
-          { name: "Triceps Overhead Cable Ext.", sets: 3, reps: "12", rest: "60s", note: "Add weight" },
-        ],
-      },
-      {
-        day: "Day 5 — Pull",
-        exercises: [
-          { name: "Pull-Ups / Weighted Pull-Ups", sets: 4, reps: "5–8", rest: "2 min", note: "Add more weight" },
-          { name: "T-Bar Row", sets: 4, reps: "8–10", rest: "2 min", note: "Add weight" },
-          { name: "Single Arm DB Row", sets: 4, reps: "10/side", rest: "90s", note: "+1 set" },
-          { name: "Cable Curl (EZ bar)", sets: 3, reps: "10–12", rest: "60s", note: "Add weight" },
-          { name: "Hammer Curl", sets: 3, reps: "12", rest: "60s", note: "Add 2kg" },
-          { name: "Rear Delt Cable Fly", sets: 3, reps: "15", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 6 — Legs (Hamstring / Glute Focus)",
-        exercises: [
-          { name: "Romanian Deadlift", sets: 4, reps: "8–10", rest: "2 min", note: "Add 5kg" },
-          { name: "Leg Curl (Lying)", sets: 4, reps: "10–12", rest: "90s", note: "Add weight" },
-          { name: "Bulgarian Split Squat", sets: 4, reps: "8/leg", rest: "90s", note: "+1 set" },
-          { name: "Hip Thrust (Barbell)", sets: 4, reps: "10–12", rest: "90s", note: "Add 5–10kg" },
-          { name: "Seated Calf Raise", sets: 4, reps: "15–20", rest: "60s", note: "Add weight" },
-        ],
-      },
+      { day: "Day 2 — Pull (Back / Biceps)", exercises: [] },
+      { day: "Day 3 — Legs (Quads / Hamstrings / Calves)", exercises: [] },
+      { day: "Day 4 — Push (Chest / Shoulders / Triceps)", exercises: [] },
+      { day: "Day 5 — Pull (Back / Biceps)", exercises: [] },
+      { day: "Day 6 — Legs (Quads / Hamstrings / Calves)", exercises: [] },
     ],
   },
   {
     week: 3,
-    label: "Week 3 — Peak Effort",
+    label: "Week 3 — Peak",
     rpe: "RPE 9",
-    rpeNote: "Leaves ~1 rep in tank. Push hard — this is the money week.",
+    rpeNote: "Leaves ~1 rep in the tank. Max effort.",
     intensity: "100%",
     tag: "BUILD",
     tagColor: "#ef4444",
     days: [
       {
-        day: "Day 1 — Push",
+        day: "Day 1 — Push (Chest / Shoulders / Triceps)",
         exercises: [
-          { name: "Barbell Bench Press", sets: 5, reps: "5–6", rest: "3 min", note: "Add 2.5–5kg vs Week 2" },
-          { name: "Incline Dumbbell Press", sets: 4, reps: "8–10", rest: "90s", note: "+1 set" },
+          { name: "Barbell Bench Press", sets: 5, reps: "6–8", rest: "2–3 min", note: "Add 2.5–5 kg again" },
+          { name: "Incline Dumbbell Press", sets: 4, reps: "8–10", rest: "90s", note: "" },
           { name: "Cable Lateral Raise", sets: 4, reps: "12–15", rest: "60s", note: "+1 set" },
-          { name: "Overhead Press (DB)", sets: 4, reps: "8–10", rest: "90s", note: "Add weight" },
-          { name: "Triceps Rope Pushdown", sets: 4, reps: "12–15", rest: "60s", note: "+1 set" },
-          { name: "Overhead Triceps Extension", sets: 3, reps: "10–12", rest: "60s", note: "Add weight" },
+          { name: "Overhead Press (DB)", sets: 4, reps: "8–10", rest: "90s", note: "+1 set" },
+          { name: "Triceps Rope Pushdown", sets: 3, reps: "12–15", rest: "60s", note: "" },
+          { name: "Overhead Triceps Extension", sets: 2, reps: "12", rest: "60s", note: "" },
         ],
       },
-      {
-        day: "Day 2 — Pull",
-        exercises: [
-          { name: "Barbell Deadlift", sets: 4, reps: "4–5", rest: "3 min", note: "Heaviest yet — brace hard" },
-          { name: "Barbell Bent-Over Row", sets: 5, reps: "6–8", rest: "2 min", note: "+1 set" },
-          { name: "Lat Pulldown (Wide Grip)", sets: 4, reps: "8–10", rest: "90s", note: "Add weight" },
-          { name: "Seated Cable Row", sets: 4, reps: "10–12", rest: "90s", note: "+1 set" },
-          { name: "Dumbbell Curl", sets: 4, reps: "10–12", rest: "60s", note: "+1 set" },
-          { name: "Face Pulls", sets: 3, reps: "15", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 3 — Legs (Quad Focus)",
-        exercises: [
-          { name: "Barbell Back Squat", sets: 5, reps: "5–6", rest: "3 min", note: "Add 5kg vs Week 2" },
-          { name: "Leg Press", sets: 4, reps: "10–12", rest: "2 min", note: "Add weight" },
-          { name: "Dumbbell Lunges", sets: 4, reps: "10/leg", rest: "90s", note: "+1 set" },
-          { name: "Leg Extension", sets: 4, reps: "12–15", rest: "60s", note: "+1 set" },
-          { name: "Standing Calf Raise", sets: 4, reps: "15–20", rest: "60s", note: "Add weight" },
-        ],
-      },
-      {
-        day: "Day 4 — Push (Shoulders Focus)",
-        exercises: [
-          { name: "Seated DB Overhead Press", sets: 5, reps: "8", rest: "2 min", note: "+1 set, add weight" },
-          { name: "Incline Barbell Press", sets: 4, reps: "8–10", rest: "90s", note: "Add weight" },
-          { name: "Cable Lateral Raise", sets: 4, reps: "15", rest: "60s", note: "" },
-          { name: "Cable Front Raise", sets: 3, reps: "12", rest: "60s", note: "" },
-          { name: "Dips (Triceps)", sets: 4, reps: "8–10", rest: "90s", note: "More weight" },
-          { name: "Triceps Overhead Cable Ext.", sets: 4, reps: "10–12", rest: "60s", note: "+1 set" },
-        ],
-      },
-      {
-        day: "Day 5 — Pull",
-        exercises: [
-          { name: "Pull-Ups / Weighted Pull-Ups", sets: 5, reps: "5–6", rest: "2 min", note: "+1 set, more weight" },
-          { name: "T-Bar Row", sets: 4, reps: "8–10", rest: "2 min", note: "Add weight" },
-          { name: "Single Arm DB Row", sets: 4, reps: "10/side", rest: "90s", note: "Add weight" },
-          { name: "Cable Curl (EZ bar)", sets: 4, reps: "10–12", rest: "60s", note: "+1 set" },
-          { name: "Hammer Curl", sets: 3, reps: "12", rest: "60s", note: "Add weight" },
-          { name: "Rear Delt Cable Fly", sets: 4, reps: "15", rest: "60s", note: "+1 set" },
-        ],
-      },
-      {
-        day: "Day 6 — Legs (Hamstring / Glute Focus)",
-        exercises: [
-          { name: "Romanian Deadlift", sets: 5, reps: "8–10", rest: "2 min", note: "+1 set, add weight" },
-          { name: "Leg Curl (Lying)", sets: 4, reps: "10–12", rest: "90s", note: "Add weight" },
-          { name: "Bulgarian Split Squat", sets: 4, reps: "8/leg", rest: "90s", note: "Add weight" },
-          { name: "Hip Thrust (Barbell)", sets: 4, reps: "10–12", rest: "90s", note: "Heaviest yet" },
-          { name: "Seated Calf Raise", sets: 4, reps: "15–20", rest: "60s", note: "Add weight" },
-        ],
-      },
+      { day: "Day 2 — Pull (Back / Biceps)", exercises: [] },
+      { day: "Day 3 — Legs (Quads / Hamstrings / Calves)", exercises: [] },
+      { day: "Day 4 — Push (Chest / Shoulders / Triceps)", exercises: [] },
+      { day: "Day 5 — Pull (Back / Biceps)", exercises: [] },
+      { day: "Day 6 — Legs (Quads / Hamstrings / Calves)", exercises: [] },
     ],
   },
   {
     week: 4,
-    label: "Week 4 — Deload 🔋",
+    label: "Week 4 — Deload",
     rpe: "RPE 5–6",
-    rpeNote: "Very comfortable. Let your body recover and adapt.",
+    rpeNote: "Active recovery. Focus on mobility and technique.",
     intensity: "60%",
     tag: "DELOAD",
     tagColor: "#8b5cf6",
-    deloadNote: "Use 60% of Week 3 weights. Drop ALL sets to 3 and reps to 8–10 max. This is NOT a weak week — this is when muscles grow from Weeks 1–3.",
+    deloadNote: "Reduce all weights to 60% of Week 3. Drop to 3 sets per exercise.",
     days: [
-      {
-        day: "Day 1 — Push (Deload)",
-        exercises: [
-          { name: "Barbell Bench Press", sets: 3, reps: "8", rest: "2 min", note: "60% of Week 3 weight" },
-          { name: "Incline Dumbbell Press", sets: 3, reps: "8", rest: "90s", note: "" },
-          { name: "Cable Lateral Raise", sets: 2, reps: "12", rest: "60s", note: "" },
-          { name: "Overhead Press (DB)", sets: 3, reps: "8", rest: "90s", note: "" },
-          { name: "Triceps Rope Pushdown", sets: 2, reps: "12", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 2 — Pull (Deload)",
-        exercises: [
-          { name: "Barbell Deadlift", sets: 3, reps: "4", rest: "2 min", note: "Light — focus on technique" },
-          { name: "Barbell Bent-Over Row", sets: 3, reps: "8", rest: "90s", note: "60% weight" },
-          { name: "Lat Pulldown", sets: 3, reps: "8", rest: "90s", note: "" },
-          { name: "Dumbbell Curl", sets: 2, reps: "10", rest: "60s", note: "" },
-          { name: "Face Pulls", sets: 2, reps: "15", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 3 — Legs (Deload)",
-        exercises: [
-          { name: "Barbell Back Squat", sets: 3, reps: "6–8", rest: "2 min", note: "60% weight, perfect form" },
-          { name: "Leg Press", sets: 3, reps: "10", rest: "90s", note: "" },
-          { name: "Leg Extension", sets: 2, reps: "12", rest: "60s", note: "" },
-          { name: "Standing Calf Raise", sets: 3, reps: "15", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 4 — Push (Deload)",
-        exercises: [
-          { name: "Seated DB Overhead Press", sets: 3, reps: "8", rest: "90s", note: "60% weight" },
-          { name: "Incline Barbell Press", sets: 3, reps: "8", rest: "90s", note: "" },
-          { name: "Cable Lateral Raise", sets: 2, reps: "12", rest: "60s", note: "" },
-          { name: "Dips (Bodyweight)", sets: 2, reps: "8", rest: "60s", note: "Bodyweight only" },
-        ],
-      },
-      {
-        day: "Day 5 — Pull (Deload)",
-        exercises: [
-          { name: "Pull-Ups (Bodyweight)", sets: 3, reps: "5–6", rest: "90s", note: "No added weight" },
-          { name: "T-Bar Row", sets: 3, reps: "8", rest: "90s", note: "60% weight" },
-          { name: "Cable Curl (EZ bar)", sets: 2, reps: "10", rest: "60s", note: "" },
-          { name: "Hammer Curl", sets: 2, reps: "10", rest: "60s", note: "" },
-        ],
-      },
-      {
-        day: "Day 6 — Legs (Deload)",
-        exercises: [
-          { name: "Romanian Deadlift", sets: 3, reps: "8", rest: "90s", note: "60% weight, slow and controlled" },
-          { name: "Leg Curl (Lying)", sets: 3, reps: "10", rest: "60s", note: "" },
-          { name: "Hip Thrust (Barbell)", sets: 3, reps: "10", rest: "90s", note: "60% weight" },
-          { name: "Seated Calf Raise", sets: 3, reps: "15", rest: "60s", note: "" },
-        ],
-      },
+      { day: "Day 1 — Push (Chest / Shoulders / Triceps)", exercises: [] },
+      { day: "Day 2 — Pull (Back / Biceps)", exercises: [] },
+      { day: "Day 3 — Legs (Quads / Hamstrings / Calves)", exercises: [] },
+      { day: "Day 4 — Push (Chest / Shoulders / Triceps)", exercises: [] },
+      { day: "Day 5 — Pull (Back / Biceps)", exercises: [] },
+      { day: "Day 6 — Legs (Quads / Hamstrings / Calves)", exercises: [] },
     ],
   },
 ];
@@ -310,284 +163,514 @@ const weightStrategy = [
   { rule: "Log everything", detail: "Write down every weight and rep. You can't progress what you don't track." },
 ];
 
-const DONE_KEY = "workout.doneSets.v1";
-
-// localStorage helpers, guarded for private mode / quota errors.
-function loadDone() {
-  try {
-    const raw = localStorage.getItem(DONE_KEY);
-    const parsed = raw ? JSON.parse(raw) : {};
-    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-function saveDone(obj) {
-  try {
-    localStorage.setItem(DONE_KEY, JSON.stringify(obj));
-  } catch {
-    /* ignore */
-  }
-}
-
-// Parse a rest string ("90s", "2 min", "2–3 min", "3 min") into seconds.
-// For a range, use the upper bound (fuller recovery).
-function parseRest(rest) {
-  if (!rest) return 0;
-  const nums = (rest.match(/\d+/g) || []).map(Number);
-  if (nums.length === 0) return 0;
-  const value = Math.max(...nums);
-  return /min/i.test(rest) ? value * 60 : value;
-}
-
 function formatTime(totalSeconds) {
-  // ceil so the readout shows 0:01 until truly elapsed (never 0:00 before finish)
-  const s = Math.max(0, Math.ceil(totalSeconds));
-  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+  if (totalSeconds == null || isNaN(totalSeconds)) return "0:00";
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-const timerBtn = {
-  background: "transparent", color: "#e2e8f0", border: "1px solid #334155",
-  borderRadius: 10, padding: "10px 12px", fontSize: 13, fontWeight: 700,
-  cursor: "pointer", touchAction: "manipulation", whiteSpace: "nowrap",
-  minHeight: 44, WebkitUserSelect: "none", userSelect: "none",
-};
+function parseRest(restStr) {
+  if (!restStr) return 0;
+  const num = parseInt(restStr.replace(/\D/g, ""), 10);
+  if (restStr.includes("min")) return num * 60;
+  return num || 0;
+}
+
+function exKey(weekIdx, dayIdx, exName) {
+  return `w${weekIdx}_d${dayIdx}_${exName.replace(/\s+/g, "_").toLowerCase()}`;
+}
+
+// API helpers for Google Sheets
+async function fetchWorkoutData(username) {
+  try {
+    const response = await fetch(`/api/workout-data?username=${username}`);
+    const result = await response.json();
+    if (result.success) {
+      return result.data;
+    }
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+  }
+  return [];
+}
+
+async function saveWorkoutData(data) {
+  try {
+    const response = await fetch('/api/workout-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to save data:', error);
+    return { success: false };
+  }
+}
 
 export default function WorkoutPlan() {
+  const [username, setUsername] = useState(() => localStorage.getItem("workout_username") || "");
+  const [showUsernameModal, setShowUsernameModal] = useState(() => !localStorage.getItem("workout_username"));
   const [activeWeek, setActiveWeek] = useState(0);
   const [activeDay, setActiveDay] = useState(0);
+  const [weeks, setWeeks] = useState(initialWeeks);
+  const [done, setDone] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [syncStatus, setSyncStatus] = useState('idle');
+  const [timer, setTimer] = useState(null);
+  const timerRef = useRef(null);
+  const remainingRef = useRef(0);
+
+  // Load data from Google Sheet when username is set
+  useEffect(() => {
+    if (username) {
+      loadUserData();
+    }
+  }, [username]);
+
+  async function loadUserData() {
+    setLoading(true);
+    setSyncStatus('syncing');
+    
+    try {
+      const data = await fetchWorkoutData(username);
+      
+      // Update done status from sheet
+      const doneMap = {};
+      data.forEach(row => {
+        if (row.completed) {
+          const key = exKey(row.week - 1, row.day - 1, row.exercise);
+          doneMap[key] = true;
+        }
+      });
+      setDone(doneMap);
+      
+      setSyncStatus('synced');
+    } catch (error) {
+      console.error('Error loading data:', error);
+      setSyncStatus('error');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function syncExerciseData(weekIdx, dayIdx, exName, completed) {
+    const exercise = weeks[weekIdx].days[dayIdx].exercises.find(e => e.name === exName);
+    const data = {
+      username,
+      week: weekIdx + 1,
+      day: dayIdx + 1,
+      exercise: exName,
+      sets: exercise?.sets || 0,
+      reps: exercise?.reps || '',
+      rest: exercise?.rest || '',
+      note: exercise?.note || '',
+      completed,
+    };
+
+    setSyncStatus('syncing');
+    const result = await saveWorkoutData(data);
+    if (result.success) {
+      setSyncStatus('synced');
+      setTimeout(() => setSyncStatus('idle'), 2000);
+    } else {
+      setSyncStatus('error');
+    }
+  }
+
+  useEffect(() => {
+    if (username) {
+      localStorage.setItem("workout_username", username);
+    }
+  }, [username]);
+
+  useEffect(() => {
+    return () => clearInterval(timerRef.current);
+  }, []);
 
   const week = weeks[activeWeek];
   const day = week.days[activeDay];
+  const doneCount = day.exercises.filter((ex) => done[exKey(activeWeek, activeDay, ex.name)]).length;
 
-  // ----- Per-exercise "done" check-off (persisted) -----
-  const [done, setDone] = useState(loadDone);
-  useEffect(() => { saveDone(done); }, [done]);
-
-  const exKey = (w, d, name) => `${w}:${d}:${name}`;
-  const toggleDone = (name) =>
-    setDone((prev) => {
-      const key = exKey(activeWeek, activeDay, name);
-      const next = { ...prev };
-      if (next[key]) delete next[key];
-      else next[key] = true;
-      return next;
-    });
-  const resetDay = () =>
-    setDone((prev) => {
-      const prefix = `${activeWeek}:${activeDay}:`;
-      const next = {};
-      for (const k of Object.keys(prev)) if (!k.startsWith(prefix)) next[k] = prev[k];
-      return next;
-    });
-  const doneCount = day.exercises.filter(
-    (ex) => done[exKey(activeWeek, activeDay, ex.name)]
-  ).length;
-
-  // ----- Rest timer -----
-  // timer: null | { total, label, endAt(ms)|null, pausedRemaining(s)|null, finished }
-  const [timer, setTimer] = useState(null);
-  const [now, setNow] = useState(() => Date.now());
-  const audioRef = useRef(null);
-  const finishedRef = useRef(false);
-
-  const isRunning = !!(timer && timer.endAt != null && !timer.finished);
-  const remaining = timer
-    ? timer.pausedRemaining != null
-      ? timer.pausedRemaining
-      : Math.max(0, (timer.endAt - now) / 1000)
-    : 0;
-
-  // Tick only while running.
-  useEffect(() => {
-    if (!isRunning) return;
-    const id = setInterval(() => setNow(Date.now()), 250);
-    return () => clearInterval(id);
-  }, [isRunning]);
-
-  function beep() {
-    try {
-      const ctx = audioRef.current;
-      if (!ctx) return;
-      ctx.resume?.();
-      const t0 = ctx.currentTime;
-      [0, 0.3, 0.6].forEach((offset) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.frequency.value = 880;
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        gain.gain.setValueAtTime(0.0001, t0 + offset);
-        gain.gain.exponentialRampToValueAtTime(0.3, t0 + offset + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + offset + 0.18);
-        osc.start(t0 + offset);
-        osc.stop(t0 + offset + 0.2);
-      });
-    } catch { /* ignore */ }
+  function toggleDone(exName) {
+    const key = exKey(activeWeek, activeDay, exName);
+    const newCompleted = !done[key];
+    
+    setDone((prev) => ({ ...prev, [key]: newCompleted }));
+    syncExerciseData(activeWeek, activeDay, exName, newCompleted);
   }
 
-  // Fire once when the timer reaches zero (running, or paused exactly at 0).
-  useEffect(() => {
-    if (timer && !timer.finished && remaining <= 0 && !finishedRef.current) {
-      finishedRef.current = true;
-      setTimer((t) => (t ? { ...t, finished: true, endAt: null } : t));
-      navigator.vibrate?.([200, 100, 200]);
-      beep();
-    }
-  }, [isRunning, remaining]);
-
-  // iOS freezes JS timers when the PWA is backgrounded. On return to the
-  // foreground, recompute elapsed time immediately and re-arm audio so a
-  // timer that expired while away reconciles (and chimes) on reopen.
-  useEffect(() => {
-    const onVisible = () => {
-      if (document.visibilityState === "visible") {
-        audioRef.current?.resume?.();
-        setNow(Date.now());
-      }
-    };
-    document.addEventListener("visibilitychange", onVisible);
-    return () => document.removeEventListener("visibilitychange", onVisible);
-  }, []);
+  function resetDay() {
+    const newDone = { ...done };
+    day.exercises.forEach((ex) => {
+      delete newDone[exKey(activeWeek, activeDay, ex.name)];
+    });
+    setDone(newDone);
+  }
 
   function startRest(ex) {
     const secs = parseRest(ex.rest);
-    if (!secs) return;
-    // Unlock/resume the AudioContext inside the tap gesture so the finish beep works on iOS.
-    try {
-      if (!audioRef.current) {
-        const Ctx = window.AudioContext || window.webkitAudioContext;
-        if (Ctx) audioRef.current = new Ctx();
+    if (secs === 0) return;
+    const id = exKey(activeWeek, activeDay, ex.name);
+    setTimer({ id, label: ex.name, total: secs, remaining: secs, pausedRemaining: null, finished: false });
+    remainingRef.current = secs;
+    timerRef.current = setInterval(() => {
+      remainingRef.current -= 1;
+      if (remainingRef.current <= 0) {
+        clearInterval(timerRef.current);
+        setTimer((t) => ({ ...t, remaining: 0, finished: true }));
+        try {
+          const audio = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZUQ4PVqzn8K1hGgU7k9r0z3kpBS2A0PLaizsIGGS57OihURALTqXh8bllHAU2jdXzyn0tBSp+zfDdkUEKFWCy6+qnVRQLSKDh8r5uIQU0h9Hy04IzBh1rv+/mnVIOD1Wr5O+rYRoFOpHZ88p6KgUte87w15Y9CRZhtuvqp1QWCkef4PK9bSIFM4XP8tWDMwYfbsPv5p1SDg9Uq+Tvq2EbBTmP2PPKfC0FKn7N8NqSOwoYY7bt6qdUFgpHn+Dyvmwi");
+          audio.play();
+        } catch {}
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      } else {
+        setTimer((t) => ({ ...t, remaining: remainingRef.current }));
       }
-      audioRef.current?.resume?.();
-    } catch { /* ignore */ }
-    finishedRef.current = false;
-    setNow(Date.now());
-    setTimer({ total: secs, label: ex.name, id: exKey(activeWeek, activeDay, ex.name), endAt: Date.now() + secs * 1000, pausedRemaining: null, finished: false });
+    }, 1000);
   }
-  function pauseResume() {
-    setTimer((t) => {
-      if (!t || t.finished) return t;
-      if (t.pausedRemaining != null) {
-        return { ...t, endAt: Date.now() + t.pausedRemaining * 1000, pausedRemaining: null };
-      }
-      return { ...t, pausedRemaining: Math.max(0, (t.endAt - Date.now()) / 1000), endAt: null };
-    });
+
+  function adjust(delta) {
+    if (!timer || timer.finished) return;
+    clearInterval(timerRef.current);
+    const newRemaining = Math.max(0, (timer.pausedRemaining != null ? timer.pausedRemaining : timer.remaining) + delta);
+    remainingRef.current = newRemaining;
+    setTimer((t) => ({ ...t, remaining: newRemaining, pausedRemaining: newRemaining }));
   }
-  function adjust(deltaSec) {
-    finishedRef.current = false;
-    setTimer((t) => {
-      if (!t) return t;
-      if (t.pausedRemaining != null) {
-        return { ...t, finished: false, pausedRemaining: Math.max(0, t.pausedRemaining + deltaSec) };
-      }
-      const rem = Math.max(0, (t.endAt - Date.now()) / 1000);
-      return { ...t, finished: false, endAt: Date.now() + (rem + deltaSec) * 1000 };
-    });
+
+  function togglePause() {
+    if (!timer || timer.finished) return;
+    if (timer.pausedRemaining == null) {
+      clearInterval(timerRef.current);
+      setTimer((t) => ({ ...t, pausedRemaining: t.remaining }));
+    } else {
+      remainingRef.current = timer.pausedRemaining;
+      timerRef.current = setInterval(() => {
+        remainingRef.current -= 1;
+        if (remainingRef.current <= 0) {
+          clearInterval(timerRef.current);
+          setTimer((t) => ({ ...t, remaining: 0, finished: true, pausedRemaining: null }));
+          try {
+            const audio = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZUQ4PVqzn8K1hGgU7k9r0z3kpBS2A0PLaizsIGGS57OihURALTqXh8bllHAU2jdXzyn0tBSp+zfDdkUEKFWCy6+qnVRQLSKDh8r5uIQU0h9Hy04IzBh1rv+/mnVIOD1Wr5O+rYRoFOpHZ88p6KgUte87w15Y9CRZhtuvqp1QWCkef4PK9bSIFM4XP8tWDMwYfbsPv5p1SDg9Uq+Tvq2EbBTmP2PPKfC0FKn7N8NqSOwoYY7bt6qdUFgpHn+Dyvmwi");
+            audio.play();
+          } catch {}
+          if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        } else {
+          setTimer((t) => ({ ...t, remaining: remainingRef.current }));
+        }
+      }, 1000);
+      setTimer((t) => ({ ...t, pausedRemaining: null }));
+    }
   }
-  function closeTimer() { setTimer(null); finishedRef.current = false; }
+
+  function closeTimer() {
+    clearInterval(timerRef.current);
+    setTimer(null);
+  }
+
+  // Update exercise data (sets, reps)
+  function updateExercise(weekIdx, dayIdx, exName, field, value) {
+    const newWeeks = [...weeks];
+    const exercise = newWeeks[weekIdx].days[dayIdx].exercises.find(ex => ex.name === exName);
+    if (exercise) {
+      exercise[field] = value;
+      setWeeks(newWeeks);
+    }
+  }
+
+  function handleUsernameSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const newUsername = formData.get("username").trim();
+    if (newUsername) {
+      setUsername(newUsername);
+      setShowUsernameModal(false);
+    }
+  }
+
+  function switchUser() {
+    setUsername("");
+    localStorage.removeItem("workout_username");
+    setShowUsernameModal(true);
+    setDone({});
+  }
+
+  if (showUsernameModal) {
+    return (
+      <div style={{
+        minHeight: "100vh",
+        background: dark,
+        color: light,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+      }}>
+        <div style={{
+          background: card,
+          borderRadius: 16,
+          padding: 32,
+          maxWidth: 400,
+          width: "100%",
+          boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
+        }}>
+          <h1 style={{ margin: "0 0 8px", fontSize: 28, fontWeight: 800 }}>
+            Welcome to Workout Plan
+          </h1>
+          <p style={{ margin: "0 0 24px", color: muted }}>
+            Enter your username to start tracking your workouts
+          </p>
+          <form onSubmit={handleUsernameSubmit}>
+            <input
+              type="text"
+              name="username"
+              placeholder="Your username"
+              required
+              autoFocus
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                fontSize: 16,
+                borderRadius: 8,
+                border: "2px solid #334155",
+                background: dark,
+                color: light,
+                marginBottom: 16,
+                boxSizing: "border-box",
+              }}
+            />
+            <button
+              type="submit"
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                fontSize: 16,
+                fontWeight: 700,
+                borderRadius: 8,
+                border: "none",
+                background: accent,
+                color: "#000",
+                cursor: "pointer",
+              }}
+            >
+              Start Workout
+            </button>
+          </form>
+          <p style={{ marginTop: 16, fontSize: 12, color: muted }}>
+            Your progress will be saved to the cloud
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ background: dark, minHeight: "100dvh", color: light, fontFamily: "-apple-system, system-ui, sans-serif", padding: "0 0 calc(60px + env(safe-area-inset-bottom)) 0" }}>
+    <div style={{
+      minHeight: "100vh",
+      background: dark,
+      color: light,
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      paddingBottom: 100,
+    }}>
       {/* Header */}
-      <div style={{ background: "linear-gradient(135deg, #0f172a 0%, #1a2744 100%)", borderBottom: "1px solid #1e293b", padding: "calc(28px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) 20px calc(24px + env(safe-area-inset-left))" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-            <span style={{ background: accent, color: "#000", fontWeight: 700, fontSize: 11, padding: "3px 10px", borderRadius: 20, letterSpacing: 1 }}>PPL SPLIT</span>
-            <span style={{ color: muted, fontSize: 12 }}>6 Days / Week · Intermediate · 90 kg · 185 cm</span>
+      <header style={{
+        padding: "12px 16px",
+        background: card,
+        borderBottom: "1px solid #334155",
+        position: "sticky",
+        top: 0,
+        zIndex: 10,
+      }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+          <div>
+            <div style={{ fontSize: 12, color: muted }}>PPL SPLIT · 6 Days / Week · Intermediate</div>
+            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800 }}>4-Week Progressive Overload Plan</h1>
+            <div style={{ fontSize: 14, color: muted }}>Goal: Muscle Gain + Fat Loss · No Injuries</div>
           </div>
-          <h1 style={{ margin: 0, fontSize: 26, fontWeight: 800, letterSpacing: -0.5 }}>4-Week Progressive Overload Plan</h1>
-          <p style={{ color: muted, margin: "6px 0 0", fontSize: 13 }}>Goal: Muscle Gain + Fat Loss · No Injuries</p>
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            {loading && <span style={{ color: muted, fontSize: 12 }}>Loading...</span>}
+            {syncStatus === 'syncing' && <span style={{ color: "#f59e0b", fontSize: 12 }}>Syncing...</span>}
+            {syncStatus === 'synced' && <span style={{ color: accent, fontSize: 12 }}>✓ Saved</span>}
+            {syncStatus === 'error' && <span style={{ color: "#ef4444", fontSize: 12 }}>Sync error</span>}
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontSize: 12, color: muted }}>Logged in as</div>
+              <div style={{ fontWeight: 700, color: accent }}>{username}</div>
+            </div>
+            <button
+              onClick={switchUser}
+              style={{
+                padding: "8px 12px",
+                background: "transparent",
+                border: "1px solid #334155",
+                color: muted,
+                borderRadius: 6,
+                cursor: "pointer",
+                fontSize: 12,
+              }}
+            >
+              Switch
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Sticky week selector */}
+      <div style={{
+        position: "sticky",
+        top: 120,
+        background: dark,
+        zIndex: 5,
+        padding: "12px 0",
+        borderBottom: "1px solid #334155",
+      }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px", display: "flex", gap: 8, overflowX: "auto" }}>
+          {weeks.map((w, i) => (
+            <button
+              key={w.week}
+              onClick={() => { setActiveWeek(i); setActiveDay(0); }}
+              style={{
+                padding: "10px 16px",
+                background: i === activeWeek ? w.tagColor : card,
+                color: i === activeWeek ? "#000" : light,
+                border: "none",
+                borderRadius: 8,
+                fontWeight: i === activeWeek ? 800 : 600,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                fontSize: 14,
+              }}
+            >
+              Week {w.week} {i === activeWeek && `· ${w.tag}`}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 calc(16px + env(safe-area-inset-right)) 0 calc(16px + env(safe-area-inset-left))" }}>
-
-        {/* Sticky selectors (week + day) — full-bleed so the pinned bar covers edge-to-edge */}
-        <div style={{
-          position: "sticky", top: "env(safe-area-inset-top)", zIndex: 20,
-          background: dark, paddingTop: 12, paddingBottom: 10,
-          borderBottom: "1px solid #1e293b",
-          margin: "0 calc(-16px - env(safe-area-inset-right)) 0 calc(-16px - env(safe-area-inset-left))",
-          paddingLeft: "calc(16px + env(safe-area-inset-left))",
-          paddingRight: "calc(16px + env(safe-area-inset-right))"
-        }}>
-          {/* Week Selector */}
-          <div className="no-scrollbar" style={{ display: "flex", gap: 8, overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-            {weeks.map((w, i) => (
-              <button key={i} onClick={() => { setActiveWeek(i); setActiveDay(0); }}
-                style={{
-                  background: activeWeek === i ? w.tagColor : card,
-                  color: activeWeek === i ? "#fff" : muted,
-                  border: activeWeek === i ? "none" : `1px solid #334155`,
-                  borderRadius: 10, padding: "10px 18px", fontWeight: 700, fontSize: 13,
-                  cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.2s",
-                  minHeight: 44, display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  touchAction: "manipulation",
-                  boxShadow: activeWeek === i ? `0 0 20px ${w.tagColor}44` : "none"
-                }}>
-                {`Week ${w.week}`}
-                {w.tag === "DELOAD" && <span style={{ marginLeft: 6, fontSize: 10, opacity: 0.8 }}>🔋</span>}
-              </button>
-            ))}
-          </div>
-          {/* Day Selector */}
-          <div className="no-scrollbar" style={{ display: "flex", gap: 6, marginTop: 8, overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-            {week.days.map((d, i) => (
-              <button key={i} onClick={() => setActiveDay(i)}
-                style={{
-                  background: activeDay === i ? accent : card,
-                  color: activeDay === i ? "#000" : muted,
-                  border: activeDay === i ? "none" : "1px solid #334155",
-                  borderRadius: 8, padding: "8px 14px", fontWeight: 700, fontSize: 13,
-                  cursor: "pointer", whiteSpace: "nowrap",
-                  minHeight: 44, minWidth: 48, display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  touchAction: "manipulation"
-                }}>
-                Day {i + 1}
-              </button>
-            ))}
-          </div>
+      {/* Sticky day selector */}
+      <div style={{
+        position: "sticky",
+        top: 185,
+        background: dark,
+        zIndex: 5,
+        padding: "12px 0",
+        borderBottom: "1px solid #334155",
+      }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px", display: "flex", gap: 8, overflowX: "auto" }}>
+          {week.days.map((d, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveDay(i)}
+              style={{
+                padding: "10px 16px",
+                background: i === activeDay ? accent : card,
+                color: i === activeDay ? "#000" : light,
+                border: "none",
+                borderRadius: 8,
+                fontWeight: i === activeDay ? 800 : 600,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                fontSize: 14,
+              }}
+            >
+              Day {i + 1}
+            </button>
+          ))}
         </div>
+      </div>
 
+      <main style={{ maxWidth: 900, margin: "0 auto", padding: 20 }}>
         {/* Week Info Card */}
-        <div style={{ background: card, borderRadius: 14, padding: "18px 20px", marginTop: 16, border: `1px solid ${week.tagColor}44`, position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", top: 0, right: 0, background: week.tagColor, padding: "4px 14px", borderRadius: "0 14px 0 14px", fontSize: 10, fontWeight: 800, letterSpacing: 1 }}>{week.tag}</div>
-          <h2 style={{ margin: "0 0 6px", fontSize: 18, fontWeight: 700 }}>{week.label}</h2>
-          <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-            <span style={{ background: "#0f172a", borderRadius: 8, padding: "4px 12px", fontSize: 13, fontWeight: 700, color: accent }}>{week.rpe}</span>
-            <span style={{ background: "#0f172a", borderRadius: 8, padding: "4px 12px", fontSize: 13, color: muted }}>Intensity: {week.intensity}</span>
+        <section style={{
+          background: card,
+          borderRadius: 12,
+          padding: 20,
+          marginBottom: 24,
+          border: `2px solid ${week.tagColor}`,
+        }}>
+          <div style={{
+            display: "inline-block",
+            background: week.tagColor,
+            color: "#000",
+            padding: "4px 12px",
+            borderRadius: 6,
+            fontSize: 12,
+            fontWeight: 800,
+            marginBottom: 8,
+          }}>
+            {week.tag}
           </div>
-          <p style={{ color: muted, fontSize: 13, margin: "10px 0 0" }}>{week.rpeNote}</p>
+          <h2 style={{ margin: "0 0 8px", fontSize: 24, fontWeight: 800 }}>{week.label}</h2>
+          <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+            <div style={{
+              background: dark,
+              padding: "6px 12px",
+              borderRadius: 6,
+              fontSize: 14,
+              fontWeight: 700,
+              color: accent,
+            }}>
+              {week.rpe}
+            </div>
+            <div style={{ color: muted, fontSize: 14 }}>Intensity: {week.intensity}</div>
+          </div>
+          <p style={{ margin: "12px 0 0", color: muted }}>{week.rpeNote}</p>
           {week.deloadNote && (
-            <div style={{ background: "#2d1f6e", borderRadius: 8, padding: "10px 14px", marginTop: 10, fontSize: 12, color: "#c4b5fd", lineHeight: 1.6 }}>
+            <div style={{
+              marginTop: 12,
+              padding: 12,
+              background: "rgba(139, 92, 246, 0.1)",
+              borderLeft: `3px solid #8b5cf6`,
+              borderRadius: 6,
+              color: "#c4b5fd",
+              fontSize: 14,
+            }}>
               ⚡ {week.deloadNote}
             </div>
           )}
-        </div>
+        </section>
 
         {/* Exercise Table */}
-        <div style={{ background: card, borderRadius: 14, marginTop: 12, overflow: "hidden", border: "1px solid #334155" }}>
-          <div style={{ padding: "14px 20px", borderBottom: "1px solid #334155", background: "#1a2744", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-            <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: accent }}>{day.day}</h3>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, whiteSpace: "nowrap", color: doneCount === day.exercises.length ? accent : muted }}>
-                {doneCount}/{day.exercises.length} done
-              </span>
+        <section style={{ background: card, borderRadius: 12, overflow: "hidden", marginBottom: 24 }}>
+          <div style={{ padding: 16, borderBottom: "1px solid #334155", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <h3 style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>{day.day}</h3>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <span style={{ color: muted, fontSize: 14 }}>{doneCount}/{day.exercises.length} done</span>
               {doneCount > 0 && (
-                <button onClick={resetDay}
-                  style={{ background: "transparent", border: "1px solid #334155", color: muted, borderRadius: 8, padding: "6px 10px", fontSize: 11, fontWeight: 700, cursor: "pointer", touchAction: "manipulation", WebkitUserSelect: "none", userSelect: "none" }}>
+                <button
+                  onClick={resetDay}
+                  style={{
+                    padding: "6px 12px",
+                    background: "transparent",
+                    border: "1px solid #ef4444",
+                    color: "#ef4444",
+                    borderRadius: 6,
+                    cursor: "pointer",
+                    fontSize: 12,
+                    fontWeight: 700,
+                  }}
+                >
                   Reset
                 </button>
               )}
             </div>
           </div>
-          <div className="no-scrollbar" style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
-              <thead>
-                <tr style={{ background: "#0f172a" }}>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+              <thead style={{ background: dark }}>
+                <tr>
                   {["✓", "Exercise", "Sets", "Reps", "Rest", "Note"].map(h => (
-                    <th key={h} style={{ padding: "10px 14px", textAlign: "left", color: muted, fontWeight: 600, fontSize: 11, letterSpacing: 0.5, whiteSpace: "nowrap" }}>{h}</th>
+                    <th key={h} style={{
+                      padding: 12,
+                      textAlign: "left",
+                      fontWeight: 700,
+                      borderBottom: "2px solid #334155",
+                      color: muted,
+                      fontSize: 12,
+                      textTransform: "uppercase",
+                    }}>
+                      {h}
+                    </th>
                   ))}
                 </tr>
               </thead>
@@ -597,72 +680,144 @@ export default function WorkoutPlan() {
                   const restSecs = parseRest(ex.rest);
                   const isActiveRest = !!(timer && timer.id === exKey(activeWeek, activeDay, ex.name));
                   return (
-                  <tr key={i} style={{ borderTop: "1px solid #1e293b", background: i % 2 === 0 ? "transparent" : "#1a2234", opacity: isDone ? 0.45 : 1, transition: "opacity 0.2s" }}>
-                    <td style={{ padding: "12px 14px" }}>
-                      <button onClick={() => toggleDone(ex.name)} aria-label={isDone ? "Mark not done" : "Mark done"}
-                        style={{
-                          width: 30, height: 30, borderRadius: "50%", cursor: "pointer", touchAction: "manipulation",
-                          display: "inline-flex", alignItems: "center", justifyContent: "center",
-                          fontSize: 12, fontWeight: 800, WebkitUserSelect: "none", userSelect: "none",
-                          background: isDone ? accent : "transparent",
-                          color: isDone ? "#000" : muted,
-                          border: isDone ? "none" : "1.5px solid #334155"
-                        }}>
-                        {isDone ? "✓" : String(i + 1).padStart(2, "0")}
-                      </button>
-                    </td>
-                    <td style={{ padding: "12px 14px", fontWeight: 600, color: light, textDecoration: isDone ? "line-through" : "none" }}>{ex.name}</td>
-                    <td style={{ padding: "12px 14px", color: accent, fontWeight: 700 }}>{ex.sets}</td>
-                    <td style={{ padding: "12px 14px", color: "#fbbf24", fontWeight: 600 }}>{ex.reps}</td>
-                    <td style={{ padding: "12px 14px", whiteSpace: "nowrap" }}>
-                      {restSecs > 0 ? (
-                        <button onClick={() => startRest(ex)} aria-label={`Start ${ex.rest} rest timer`}
+                    <tr key={ex.name} style={{
+                      opacity: isDone ? 0.5 : 1,
+                      borderBottom: "1px solid #334155",
+                    }}>
+                      <td style={{ padding: 12 }}>
+                        <button
+                          onClick={() => toggleDone(ex.name)}
+                          aria-label={isDone ? "Mark not done" : "Mark done"}
                           style={{
-                            background: isActiveRest ? accent : "transparent",
-                            color: isActiveRest ? "#000" : muted,
-                            border: isActiveRest ? "none" : "1px solid #334155",
-                            borderRadius: 8, padding: "6px 10px", fontSize: 12, fontWeight: 700,
-                            cursor: "pointer", touchAction: "manipulation", whiteSpace: "nowrap",
-                            WebkitUserSelect: "none", userSelect: "none",
-                            display: "inline-flex", alignItems: "center", gap: 5
-                          }}>
-                          <span style={{ fontSize: 10 }}>▶</span>{ex.rest}
+                            width: 30,
+                            height: 30,
+                            borderRadius: "50%",
+                            cursor: "pointer",
+                            touchAction: "manipulation",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 12,
+                            fontWeight: 800,
+                            WebkitUserSelect: "none",
+                            userSelect: "none",
+                            background: isDone ? accent : "transparent",
+                            color: isDone ? "#000" : muted,
+                            border: isDone ? "none" : "1.5px solid #334155",
+                          }}
+                        >
+                          {isDone ? "✓" : String(i + 1).padStart(2, "0")}
                         </button>
-                      ) : (
-                        <span style={{ color: muted }}>{ex.rest}</span>
-                      )}
-                    </td>
-                    <td style={{ padding: "12px 14px", color: "#cbd5e1", fontSize: 13 }}>{ex.note || "—"}</td>
-                  </tr>
+                      </td>
+                      <td style={{ padding: 12, fontWeight: 600 }}>{ex.name}</td>
+                      <td style={{ padding: 12 }}>
+                        <input
+                          type="number"
+                          value={ex.sets}
+                          onChange={(e) => updateExercise(activeWeek, activeDay, ex.name, "sets", parseInt(e.target.value) || 0)}
+                          style={{
+                            width: 50,
+                            padding: "4px 8px",
+                            background: dark,
+                            border: "1px solid #334155",
+                            borderRadius: 4,
+                            color: light,
+                            fontSize: 13,
+                            fontWeight: 700,
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: 12 }}>
+                        <input
+                          type="text"
+                          value={ex.reps}
+                          onChange={(e) => updateExercise(activeWeek, activeDay, ex.name, "reps", e.target.value)}
+                          style={{
+                            width: 70,
+                            padding: "4px 8px",
+                            background: dark,
+                            border: "1px solid #334155",
+                            borderRadius: 4,
+                            color: accent,
+                            fontSize: 13,
+                            fontWeight: 700,
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: 12 }}>
+                        {restSecs > 0 ? (
+                          <button
+                            onClick={() => startRest(ex)}
+                            aria-label={`Start ${ex.rest} rest timer`}
+                            style={{
+                              background: isActiveRest ? accent : "transparent",
+                              color: isActiveRest ? "#000" : muted,
+                              border: isActiveRest ? "none" : "1px solid #334155",
+                              borderRadius: 8,
+                              padding: "6px 10px",
+                              fontSize: 12,
+                              fontWeight: 700,
+                              cursor: "pointer",
+                              touchAction: "manipulation",
+                              whiteSpace: "nowrap",
+                              WebkitUserSelect: "none",
+                              userSelect: "none",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 5,
+                            }}
+                          >
+                            ▶ {ex.rest}
+                          </button>
+                        ) : (
+                          <span style={{ color: muted }}>{ex.rest || "—"}</span>
+                        )}
+                      </td>
+                      <td style={{ padding: 12, color: muted }}>{ex.note || "—"}</td>
+                    </tr>
                   );
                 })}
               </tbody>
             </table>
           </div>
-        </div>
+        </section>
 
         {/* Progression Strategy */}
-        <div style={{ marginTop: 24 }}>
-          <h3 style={{ color: accent, fontSize: 14, fontWeight: 700, letterSpacing: 0.5, margin: "0 0 12px" }}>⚡ WEIGHT PROGRESSION RULES</h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {weightStrategy.map((s, i) => (
-              <div key={i} style={{ background: card, borderRadius: 10, padding: "12px 16px", border: "1px solid #334155", display: "flex", gap: 12 }}>
-                <span style={{ background: "#1e293b", borderRadius: 6, padding: "2px 10px", fontSize: 11, fontWeight: 700, color: accent, whiteSpace: "nowrap", height: "fit-content", marginTop: 2 }}>{s.rule}</span>
-                <span style={{ color: muted, fontSize: 13, lineHeight: 1.6 }}>{s.detail}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <section style={{ background: card, borderRadius: 12, padding: 20, marginBottom: 24 }}>
+          <h3 style={{ margin: "0 0 16px", fontSize: 18, fontWeight: 700 }}>⚡ WEIGHT PROGRESSION RULES</h3>
+          {weightStrategy.map((s, i) => (
+            <div key={i} style={{
+              padding: 12,
+              background: dark,
+              borderRadius: 8,
+              marginBottom: i < weightStrategy.length - 1 ? 8 : 0,
+            }}>
+              <div style={{ fontWeight: 700, color: accent, marginBottom: 4 }}>{s.rule}</div>
+              <div style={{ color: muted, fontSize: 14 }}>{s.detail}</div>
+            </div>
+          ))}
+        </section>
 
         {/* Week-by-Week Progression Summary */}
-        <div style={{ marginTop: 24 }}>
-          <h3 style={{ color: accent, fontSize: 14, fontWeight: 700, letterSpacing: 0.5, margin: "0 0 12px" }}>📈 WEEKLY PROGRESSION SUMMARY</h3>
-          <div style={{ background: card, borderRadius: 14, overflow: "hidden", border: "1px solid #334155" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-              <thead>
-                <tr style={{ background: "#0f172a" }}>
+        <section style={{ background: card, borderRadius: 12, overflow: "hidden", marginBottom: 24 }}>
+          <div style={{ padding: 16, borderBottom: "1px solid #334155" }}>
+            <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>📈 WEEKLY PROGRESSION SUMMARY</h3>
+          </div>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+              <thead style={{ background: dark }}>
+                <tr>
                   {["Week", "RPE Target", "Volume Change", "Weight Change", "Focus"].map(h => (
-                    <th key={h} style={{ padding: "10px 14px", textAlign: "left", color: muted, fontSize: 11, fontWeight: 600, letterSpacing: 0.5 }}>{h}</th>
+                    <th key={h} style={{
+                      padding: 12,
+                      textAlign: "left",
+                      fontWeight: 700,
+                      borderBottom: "2px solid #334155",
+                      color: muted,
+                      fontSize: 12,
+                    }}>
+                      {h}
+                    </th>
                   ))}
                 </tr>
               </thead>
@@ -673,81 +828,91 @@ export default function WorkoutPlan() {
                   { w: "Week 3", rpe: "RPE 9", vol: "+1 more set (peak)", wt: "+2.5–5 kg again", focus: "Max effort", color: "#ef4444" },
                   { w: "Week 4", rpe: "RPE 5–6", vol: "Drop to 3 sets", wt: "60% of Week 3", focus: "Deload & recover", color: "#8b5cf6" },
                 ].map((row, i) => (
-                  <tr key={i} style={{ borderTop: "1px solid #1e293b" }}>
-                    <td style={{ padding: "12px 14px", fontWeight: 700, color: row.color }}>{row.w}</td>
-                    <td style={{ padding: "12px 14px", color: accent, fontWeight: 600 }}>{row.rpe}</td>
-                    <td style={{ padding: "12px 14px", color: light }}>{row.vol}</td>
-                    <td style={{ padding: "12px 14px", color: light }}>{row.wt}</td>
-                    <td style={{ padding: "12px 14px", color: muted, fontSize: 12 }}>{row.focus}</td>
+                  <tr key={i} style={{ borderBottom: i < 3 ? "1px solid #334155" : "none" }}>
+                    <td style={{ padding: 12, fontWeight: 700, color: row.color }}>{row.w}</td>
+                    <td style={{ padding: 12, color: accent, fontWeight: 700 }}>{row.rpe}</td>
+                    <td style={{ padding: 12, color: muted }}>{row.vol}</td>
+                    <td style={{ padding: 12, color: muted }}>{row.wt}</td>
+                    <td style={{ padding: 12, color: muted }}>{row.focus}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
-
-        {/* Month 2 CTA */}
-        <div style={{ marginTop: 28, background: "linear-gradient(135deg, #1a1a3e, #1e293b)", borderRadius: 16, padding: "22px 24px", border: "1px solid #4c1d95" }}>
-          <div style={{ fontSize: 16, fontWeight: 800, color: "#c4b5fd", marginBottom: 10 }}>🚀 Month 2 ke liye ye details bhejo:</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {[
-              "Week 1–3 mein kin exercises mein weight badha paye aur kitna?",
-              "Koi exercise jisme progress nahi hua (we'll swap or fix it)",
-              "Average body weight at end of Month 1",
-              "Energy levels: high / medium / low throughout the month",
-              "Sleep quality: 7+ hrs / less than 7 hrs",
-              "Diet: rough calorie intake (surplus / deficit / maintenance)",
-              "Koi nayi injury ya discomfort?",
-              "Weakest body part jisme tum zyada focus chahte ho",
-            ].map((item, i) => (
-              <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <span style={{ color: "#a78bfa", fontWeight: 700, minWidth: 20, fontSize: 13 }}>{i + 1}.</span>
-                <span style={{ color: "#e2e8f0", fontSize: 13, lineHeight: 1.6 }}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+        </section>
+      </main>
 
       {/* Floating rest timer */}
       {timer && (
         <div style={{
-          position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 30,
-          background: timer.finished ? accent : "#1a2744",
-          borderTop: `1px solid ${timer.finished ? accent : "#334155"}`,
-          padding: "12px calc(16px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))",
-          boxShadow: "0 -8px 24px rgba(0,0,0,0.4)"
+          position: "fixed",
+          bottom: 20,
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: timer.finished ? accent : card,
+          color: timer.finished ? "#000" : light,
+          padding: "16px 24px",
+          borderRadius: 12,
+          boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
+          display: "flex",
+          alignItems: "center",
+          gap: 16,
+          zIndex: 100,
+          border: timer.finished ? "none" : "2px solid #334155",
         }}>
-          <div style={{ maxWidth: 800, margin: "0 auto" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.5, textTransform: "uppercase", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", color: timer.finished ? "#052e16" : muted }}>
-                  {timer.finished ? "Rest complete" : "Rest"} · {timer.label}
-                </div>
-                <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1.1, fontVariantNumeric: "tabular-nums", color: timer.finished ? "#000" : light }}>
-                  {timer.finished ? "Go! 💪" : formatTime(remaining)}
-                </div>
-              </div>
-              {!timer.finished && (
-                <>
-                  <button onClick={() => adjust(-15)} style={timerBtn}>−15s</button>
-                  <button onClick={() => adjust(15)} style={timerBtn}>+15s</button>
-                  <button onClick={pauseResume} style={{ ...timerBtn, background: accent, color: "#000", border: "none" }}>
-                    {timer.pausedRemaining != null ? "Resume" : "Pause"}
-                  </button>
-                </>
-              )}
-              <button onClick={closeTimer} aria-label="Close timer"
-                style={{ ...timerBtn, fontWeight: 800, background: timer.finished ? "#000" : "transparent", color: timer.finished ? accent : muted, border: timer.finished ? "none" : "1px solid #334155" }}>
-                {timer.finished ? "Done" : "✕"}
-              </button>
-            </div>
-            {!timer.finished && (
-              <div style={{ height: 4, background: "#0f172a", borderRadius: 4, marginTop: 10, overflow: "hidden" }}>
-                <div style={{ height: "100%", width: `${timer.total ? (remaining / timer.total) * 100 : 0}%`, background: accent, transition: "width 0.25s linear" }} />
-              </div>
-            )}
+          <div style={{ fontWeight: 800, fontSize: 14 }}>
+            {timer.finished ? "Rest complete" : "Rest"} · {timer.label}
           </div>
+          <div style={{
+            fontWeight: 900,
+            fontSize: 24,
+            fontVariantNumeric: "tabular-nums",
+            minWidth: 60,
+            textAlign: "center",
+          }}>
+            {timer.finished ? "Go! 💪" : formatTime(timer.remaining)}
+          </div>
+          {!timer.finished && (
+            <>
+              <button onClick={() => adjust(-15)} style={{
+                padding: "8px 12px",
+                background: dark,
+                border: "none",
+                borderRadius: 6,
+                color: light,
+                fontWeight: 700,
+                cursor: "pointer",
+              }}>−15s</button>
+              <button onClick={() => adjust(15)} style={{
+                padding: "8px 12px",
+                background: dark,
+                border: "none",
+                borderRadius: 6,
+                color: light,
+                fontWeight: 700,
+                cursor: "pointer",
+              }}>+15s</button>
+              <button onClick={togglePause} style={{
+                padding: "8px 16px",
+                background: accent,
+                border: "none",
+                borderRadius: 6,
+                color: "#000",
+                fontWeight: 800,
+                cursor: "pointer",
+              }}>{timer.pausedRemaining != null ? "Resume" : "Pause"}</button>
+            </>
+          )}
+          <button onClick={closeTimer} style={{
+            padding: "8px 12px",
+            background: "transparent",
+            border: "none",
+            borderRadius: 6,
+            color: muted,
+            fontWeight: 700,
+            cursor: "pointer",
+            fontSize: 18,
+          }}>{timer.finished ? "Done" : "✕"}</button>
         </div>
       )}
     </div>
