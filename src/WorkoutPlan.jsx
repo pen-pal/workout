@@ -255,10 +255,8 @@ export default function WorkoutPlan() {
     }
   }
 
-  // Add this improved sync function
   async function syncExerciseData(weekIdx, dayIdx, exName, completed) {
     const exercise = weeks[weekIdx].days[dayIdx].exercises.find(e => e.name === exName);
-    
     const data = {
       username,
       week: weekIdx + 1,
@@ -271,24 +269,20 @@ export default function WorkoutPlan() {
       completed,
     };
   
-    console.log('📤 Sending data:', data);
     setSyncStatus('syncing');
     
     try {
       const result = await saveWorkoutData(data);
-      console.log('📥 Received response:', result);
       
       if (result.success) {
         setSyncStatus('synced');
         setTimeout(() => setSyncStatus('idle'), 2000);
       } else {
         setSyncStatus('error');
-        alert('Failed to save: ' + (result.error || 'Unknown error'));
       }
     } catch (error) {
-      console.error('❌ Sync error:', error);
+      console.error('Sync error:', error);
       setSyncStatus('error');
-      alert('Sync error: ' + error.message);
     }
   }
   
@@ -522,22 +516,7 @@ export default function WorkoutPlan() {
                 fontSize: 12,
               }}
             >
-              Switch
-              <button
-                onClick={testConnection}
-                style={{
-                  padding: "8px 12px",
-                  background: "#3b82f6",
-                  border: "none",
-                  borderRadius: 6,
-                  color: "#fff",
-                  cursor: "pointer",
-                  fontSize: 12,
-                  fontWeight: 700,
-                }}
-              >
-                Test API
-              </button>
+              Switch User
             </button>
           </div>
         </div>
@@ -945,20 +924,5 @@ export default function WorkoutPlan() {
       )}
     </div>
   );
-
-  // Add this function to test the connection
-  async function testConnection() {
-    console.log('Testing connection...');
-    try {
-      const response = await fetch('/api/workout-data?username=test');
-      const result = await response.json();
-      console.log('API Response:', result);
-      alert(result.success ? 'Connection OK!' : 'Connection failed: ' + result.error);
-    } catch (error) {
-      console.error('Test failed:', error);
-      alert('Test failed: ' + error.message);
-    }
-  }
-  
 }
 
