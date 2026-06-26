@@ -780,7 +780,27 @@ export default function WorkoutPlan() {
                           <span style={{ color: muted }}>{ex.rest || "—"}</span>
                         )}
                       </td>
-                      <td style={{ padding: 12, color: muted }}>{ex.note || "—"}</td>
+                      <td style={{ padding: 12 }}>
+                        <input
+                          type="text"
+                          value={ex.note || ''}
+                          onChange={(e) => updateNote(activeWeek, activeDay, ex.name, e.target.value)}
+                          placeholder="Add note..."
+                          style={{
+                            width: "100%",
+                            padding: "6px 8px",
+                            background: dark,
+                            border: "1px solid #334155",
+                            borderRadius: 4,
+                            color: muted,
+                            fontSize: 13,
+                            outline: "none",
+                            transition: "border-color 0.2s",
+                          }}
+                          onFocus={(e) => e.target.style.borderColor = accent}
+                          onBlur={(e) => e.target.style.borderColor = "#334155"}
+                        />
+                      </td>
                     </tr>
                   );
                 })}
@@ -924,5 +944,50 @@ export default function WorkoutPlan() {
       )}
     </div>
   );
+
+  // Add this helper function
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+  
+  // Then create a debounced save function
+  const debouncedSaveNote = debounce(async (data) => {
+    await saveWorkoutData(data);
+  }, 1000);
+  
+  // Update the updateNote function to use it:
+  function updateNote(weekIdx, dayIdx, exName, noteValue) {
+    const newWeeks = [...weeks];
+    const exercise = newWeeks[weekIdx].days[dayIdx].exercises.find(ex => ex.name === exName);
+    if (exercise) {
+      exercise.note = noteValue;
+      setWeeks(newWeeks);
+      
+      const key = exKey(weekIdx, dayIdx, exName);
+      const isCompleted = !!done[key];
+      
+      // Debounced save (waits 1 second after you stop typing)
+      debouncedSaveNote({
+        username,
+        week: weekIdx + 1,
+        day: dayIdx + 1,
+        exercise: exName,
+        sets: exercise.sets,
+        reps: exercise.reps,
+        rest: exercise.rest,
+        note: noteValue,
+        completed: isCompleted,
+      });
+    }
+  }
+
 }
 
