@@ -222,36 +222,114 @@ export default function WorkoutPlan() {
   const timerRef = useRef(null);
   const remainingRef = useRef(0);
 
-  // Load data from Google Sheet when username is set
-  useEffect(() => {
-    if (username) {
-      loadUserData();
-    }
-  }, [username]);
+  // Debounce helper
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
 
-  async function loadUserData() {
-    setLoading(true);
-    setSyncStatus('syncing');
-    
-    try {
-      const data = await fetchWorkoutData(username);
+  // Debounced save function
+  const debouncedSaveNote = debounce(async (data) => {
+    await saveWorkoutData(data);
+  }, 1000);
+
+  // Update exercise note
+  function updateNote(weekIdx, dayIdx, exName, noteValue) {
+    const newWeeks = [...weeks];
+    const exercise = newWeeks[weekIdx].days[dayIdx].exercises.find(ex => ex.name === exName);
+    if (exercise) {
+      exercise.note = noteValue;
+      setWeeks(newWeeks);
       
-      // Update done status from sheet
-      const doneMap = {};
-      data.forEach(row => {
-        if (row.completed) {
-          const key = exKey(row.week - 1, row.day - 1, row.exercise);
-          doneMap[key] = true;
-        }
+      const key = exKey(weekIdx, dayIdx, exName);
+      const isCompleted = !!done[key];
+      
+      debouncedSaveNote({
+        username,
+        week: weekIdx + 1,
+        day: dayIdx + 1,
+        exercise: exName,
+        sets: exercise.sets,
+        reps: exercise.reps,
+        rest: exercise.rest,
+        note: noteValue,
+        completed: isCompleted,
       });
-      setDone(doneMap);
+    }
+  }
+
+  // Add new exercise to a day
+  function addExercise(weekIdx, dayIdx) {
+    const newWeeks = [...weeks];
+    const newExercise = {
+      name: "New Exercise",
+      sets: 3,
+      reps: "8-10",
+      rest: "60s",
+      note: "",
+    };
+    
+    newWeeks[weekIdx].days[dayIdx].exercises.push(newExercise);
+    setWeeks(newWeeks);
+    
+    saveWorkoutData({
+      username,
+      week: weekIdx + 1,
+      day: dayIdx + 1,
+      exercise: newExercise.name,
+      sets: newExercise.sets,
+      reps: newExercise.reps,
+      rest: newExercise.rest,
+      note: newExercise.note,
+      completed: false,
+    });
+  }
+
+  // Delete exercise
+  function deleteExercise(weekIdx, dayIdx, exName) {
+    if (!confirm(`Delete ${exName}?`)) return;
+    
+    const newWeeks = [...weeks];
+    newWeeks[weekIdx].days[dayIdx].exercises = newWeeks[weekIdx].days[dayIdx].exercises.filter(
+      ex => ex.name !== exName
+    );
+    setWeeks(newWeeks);
+    
+    const key = exKey(weekIdx, dayIdx, exName);
+    const newDone = { ...done };
+    delete newDone[key];
+    setDone(newDone);
+  }
+
+  // Update exercise name
+  function updateExerciseName(weekIdx, dayIdx, oldName, newName) {
+    const newWeeks = [...weeks];
+    const exercise = newWeeks[weekIdx].days[dayIdx].exercises.find(ex => ex.name === oldName);
+    if (exercise) {
+      exercise.name = newName;
+      setWeeks(newWeeks);
       
-      setSyncStatus('synced');
-    } catch (error) {
-      console.error('Error loading data:', error);
-      setSyncStatus('error');
-    } finally {
-      setLoading(false);
+      const key = exKey(weekIdx, dayIdx, oldName);
+      const isCompleted = !!done[key];
+      
+      saveWorkoutData({
+        username,
+        week: weekIdx + 1,
+        day: dayIdx + 1,
+        exercise: newName,
+        sets: exercise.sets,
+        reps: exercise.reps,
+        rest: exercise.rest,
+        note: exercise.note,
+        completed: isCompleted,
+      });
     }
   }
 
@@ -666,7 +744,7 @@ export default function WorkoutPlan() {
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
               <thead style={{ background: dark }}>
                 <tr>
-                  {["✓", "Exercise", "Sets", "Reps", "Rest", "Note"].map(h => (
+                  {["✓", "Exercise", "Sets", "Reps", "Rest", "Note", ""].map(h => (
                     <th key={h} style={{
                       padding: 12,
                       textAlign: "left",
@@ -716,7 +794,27 @@ export default function WorkoutPlan() {
                           {isDone ? "✓" : String(i + 1).padStart(2, "0")}
                         </button>
                       </td>
-                      <td style={{ padding: 12, fontWeight: 600 }}>{ex.name}</td>
+                      <td style={{ padding: 12 }}>
+                        <input
+                          type="text"
+                          value={ex.name}
+                          onChange={(e) => updateExerciseName(activeWeek, activeDay, ex.name, e.target.value)}
+                          style={{
+                            width: "100%",
+                            padding: "6px 8px",
+                            background: dark,
+                            border: "1px solid transparent",
+                            borderRadius: 4,
+                            color: light,
+                            fontSize: 14,
+                            fontWeight: 600,
+                            outline: "none",
+                            transition: "border-color 0.2s",
+                          }}
+                          onFocus={(e) => e.target.style.borderColor = accent}
+                          onBlur={(e) => e.target.style.borderColor = "transparent"}
+                        />
+                      </td>
                       <td style={{ padding: 12 }}>
                         <input
                           type="number"
@@ -801,11 +899,58 @@ export default function WorkoutPlan() {
                           onBlur={(e) => e.target.style.borderColor = "#334155"}
                         />
                       </td>
+                      <td style={{ padding: 12, textAlign: "right" }}>
+                        <button
+                          onClick={() => deleteExercise(activeWeek, activeDay, ex.name)}
+                          title="Delete exercise"
+                          style={{
+                            padding: "4px 8px",
+                            background: "transparent",
+                            border: "1px solid #ef4444",
+                            color: "#ef4444",
+                            borderRadius: 4,
+                            cursor: "pointer",
+                            fontSize: 12,
+                            fontWeight: 700,
+                          }}
+                        >
+                          ✕
+                        </button>
+                      </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
+          </div>
+          
+          {/* Add Exercise Button */}
+          <div style={{ padding: 16, borderTop: "1px solid #334155" }}>
+            <button
+              onClick={() => addExercise(activeWeek, activeDay)}
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                background: "transparent",
+                border: "2px dashed #334155",
+                color: accent,
+                borderRadius: 8,
+                cursor: "pointer",
+                fontSize: 14,
+                fontWeight: 700,
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.borderColor = accent;
+                e.target.style.background = "rgba(34, 197, 94, 0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.borderColor = "#334155";
+                e.target.style.background = "transparent";
+              }}
+            >
+              + Add New Exercise
+            </button>
           </div>
         </section>
 
@@ -944,50 +1089,4 @@ export default function WorkoutPlan() {
       )}
     </div>
   );
-
-  // Add this helper function
-  function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-  
-  // Then create a debounced save function
-  const debouncedSaveNote = debounce(async (data) => {
-    await saveWorkoutData(data);
-  }, 1000);
-  
-  // Update the updateNote function to use it:
-  function updateNote(weekIdx, dayIdx, exName, noteValue) {
-    const newWeeks = [...weeks];
-    const exercise = newWeeks[weekIdx].days[dayIdx].exercises.find(ex => ex.name === exName);
-    if (exercise) {
-      exercise.note = noteValue;
-      setWeeks(newWeeks);
-      
-      const key = exKey(weekIdx, dayIdx, exName);
-      const isCompleted = !!done[key];
-      
-      // Debounced save (waits 1 second after you stop typing)
-      debouncedSaveNote({
-        username,
-        week: weekIdx + 1,
-        day: dayIdx + 1,
-        exercise: exName,
-        sets: exercise.sets,
-        reps: exercise.reps,
-        rest: exercise.rest,
-        note: noteValue,
-        completed: isCompleted,
-      });
-    }
-  }
-
 }
-
